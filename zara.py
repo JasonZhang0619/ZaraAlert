@@ -3,6 +3,7 @@ import sys
 from bs4 import BeautifulSoup, Tag
 import time
 from GmailApi import *
+from datetime import datetime
 
 headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit 537.36 (KHTML, like Gecko) Chrome"}
 products = {
@@ -11,13 +12,15 @@ products = {
     # "https://www.zara.com/ca/en/textured-weave-coat-p05719740.html":[0],
     # "https://www.zara.com/ca/en/faux-leather-biker-jacket-p03427301.html":1,
     "https://www.zara.com/ca/en/limited-edition-fringed-jacquard-sweater-p03597330.html":[0,1],
+    "https://www.zara.com/ca/en/jeans-regular-fit-man-unit--01-p00840351.html":[1],
     # "https://www.zara.com/ca/en/jacquard-animal-sweater-p00048301.html" :0,
     "https://www.zara.com/ca/en/satin-effect-textured-trench-coat-p06518320.html?v1=56333332": [0],
     # "https://www.zara.com/ca/en/textured-wool-sweater-p00693305.html?v1=80302140" :[0],
     # "https://www.zara.com/ca/en/double-faced-jacket-p03548300.html":[0],
     "https://www.zara.com/ca/en/relaxed-fit-trench-coat-p07380670.html":[0],
     "https://www.zara.com/ca/en/geometric-sole-leather-ankle-boots-p12014621.html":[2,3],
-    "https://www.zara.com/ca/en/limited-edition-sweater-with-scarf-p00693330.html":[0]
+    "https://www.zara.com/ca/en/limited-edition-sweater-with-scarf-p00693330.html":[0],
+    "https://www.zara.com/ca/en/leather-handbag-p13318520.html?v1=51037200": [0]
 }
 
 # zara bs4
@@ -45,13 +48,24 @@ def check_items():
 session = requests.Session()
 
 count=0
-while all(check_items()):
-    count+=1
-    print(count,'-th check')
-    if count%20==0:
+while True:
+    try:
+        if not all(check_items()):
+            break
+        count+=1
+        print(count,'-th check')
+        time.sleep(180) # Sleep for 300 seconds
+        if count%10==0:
+            session.close()
+            session = requests.Session()
+    except:
+        now = datetime.now()
+        current_time = now.strftime("%H:%M:%S")
+        print("Current Time =", current_time)
+        time.sleep(180) # Sleep for 300 seconds
         session.close()
         session = requests.Session()
-    time.sleep(180) # Sleep for 300 seconds
+
     
 i=0
 items=list(products.keys())
