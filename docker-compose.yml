@@ -1,20 +1,8 @@
 version: "3.3"
 services:
-  zara:
+  tracker:
     build:
       context: .
       dockerfile: ./docker/Dockerfile
-    volumes: 
-      - ./scripts:.
-    command: python zara.py
-
-  uniqlo:
-    build:
-      context: .
-      dockerfile: ./docker/Dockerfile
-      
-    volumes: 
-      - ./scripts:.
-    command: python uniqlo.py
 
 
