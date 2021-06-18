@@ -15,5 +15,6 @@ products = {
     # "https://www.zara.com/ca/en/leather-handbag-p13318520.html?v1=51037200": [0],
     # "https://www.zara.com/ca/en/colorblock-polo-p00526406.html?v1=104465613":[0]
     "https://www.zara.com/ca/en/leather-biker-jacket-p05388406.html" : [0,1],
-    "https://www.zara.com/ca/en/john-lennon---yoko-ono-lennon-t-shirt-p04644413.html" : [0]
+    "https://www.zara.com/ca/en/john-lennon---yoko-ono-lennon-t-shirt-p04644413.html" : [0],
+    "https://www.zara.com/ca/en/faux-suede-bomber-jacket-p03548450.html?v1=89089152":[0]
 }
