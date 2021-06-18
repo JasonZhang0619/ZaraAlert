@@ -3,6 +3,6 @@ services:
   tracker:
     build:
       context: .
-      dockerfile: ./docker/Dockerfile
-
-
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./scripts:/usr/src/app
