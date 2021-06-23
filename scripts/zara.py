@@ -25,8 +25,10 @@ def check_items():
             this_size=size_selector.find_all('li')[s]
             this.append('product-size-selector__size-list-item--out-of-stock' in this_size['class'])
         time.sleep(2)
-        result.append(all(this))
-    return result
+        if all(this):# every size out ot stock
+            continue
+        result.append(url)
+    return result # [] if nothing in stock
 
 # reload(sys)
 # sys.setdefaultencoding('utf8')
@@ -35,32 +37,22 @@ session = requests.Session()
 
 count=0
 while True:
+    count+=1
     now = datetime.now()
     current_time = now.strftime("%H:%M:%S")
     try:
-        if not all(check_items()):
-            break
-        count+=1
+        for stock in check_items():
+            del products[stock]
+            message=create_message('me','jasonzhang0619ca@gmail.com','zara',stock)
+            send_message(service,'me',message)
+            print(url,' in stock') 
+        
         print(count,'-th check at',current_time)
         time.sleep(180) # Sleep for 300 seconds
-        if count%10==0:
-            session.close()
-            session = requests.Session()
+
     except:
         print("Current Time =", current_time)
         time.sleep(180) # Sleep for 300 seconds
         session.close()
         session = requests.Session()
-
-    
-i=0
-items=list(products.keys())
-stock=[]
-for b in check_items():
-    if not b:
-        stock.append(items[i])
-    i+=1
-
-message=create_message('me','jasonzhang0619ca@gmail.com','zara','\n'.join(stock))
-send_message(service,'me',message)
 
