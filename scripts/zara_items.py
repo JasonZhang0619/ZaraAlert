@@ -13,8 +13,12 @@ products = {
     # "https://www.zara.com/ca/en/geometric-sole-leather-ankle-boots-p12014621.html":[2,3],
     # "https://www.zara.com/ca/en/limited-edition-sweater-with-scarf-p00693330.html":[0],
     # "https://www.zara.com/ca/en/leather-handbag-p13318520.html?v1=51037200": [0],
-    # "https://www.zara.com/ca/en/colorblock-polo-p00526406.html?v1=104465613":[0]
     "https://www.zara.com/ca/en/leather-biker-jacket-p05388406.html" : [0,1],
-    "https://www.zara.com/ca/en/john-lennon---yoko-ono-lennon-t-shirt-p04644413.html" : [0],
-    "https://www.zara.com/ca/en/faux-suede-bomber-jacket-p03548450.html?v1=89089152":[0]
+    # "https://www.zara.com/ca/en/john-lennon---yoko-ono-lennon-t-shirt-p04644413.html" : [0],
+    "https://www.zara.com/ca/en/faux-suede-bomber-jacket-p03548450.html?v1=89089152":[0],
+    "https://www.zara.com/ca/en/leather-jacket-p00706299.html?v1=83325360":[0,1],
+    "https://www.zara.com/ca/en/puffer-jacket-p06985402.html?v1=82349823":[0],
+    "https://www.zara.com/ca/en/limited-edition-link-necklace-p08435456.html?v1=90425013":[0],
+    # "https://www.zara.com/ca/en/white-laced-boots-p12011720.html": [2,3]
+    # "https://www.zara.com/ca/en/limited-edition-striped-suit-jacket-p04193002.html?v1=92666611":[0,1]
 }
