@@ -21,4 +21,7 @@ products = {
     "https://www.zara.com/ca/en/limited-edition-link-necklace-p08435456.html?v1=90425013":[0],
     # "https://www.zara.com/ca/en/white-laced-boots-p12011720.html": [2,3]
     # "https://www.zara.com/ca/en/limited-edition-striped-suit-jacket-p04193002.html?v1=92666611":[0,1]
+    "https://www.zara.com/ca/en/ottoman-knit-top-p04087481.html?v1=115766488":[0],
+    "https://www.zara.com/ca/en/textured-cable-knit-vest-p01775402.html?v1=100865832":[0],
+    "https://www.zara.com/ca/en/share/-p08435454.html?v1=90425014":[0]
 }
