@@ -58,20 +58,20 @@ def check_items(items):
 # reload(sys)
 # sys.setdefaultencoding('utf8')
 
-# count=0
-# items = [shop_item(url,sizes) for url, sizes in products.items()]
-# while True:
-#     count+=1
-#     now = datetime.now()
-#     current_time = now.strftime("%d/%m/%Y %H:%M:%S")
-#     try:
-#         check_items(items)
-#         print(count,'-th check at',current_time)
-#         time.sleep(180) # Sleep for 300 seconds
+count=0
+items = [shop_item(url,sizes) for url, sizes in products.items()]
+while True:
+    count+=1
+    now = datetime.now()
+    current_time = now.strftime("%d/%m/%Y %H:%M:%S")
+    try:
+        check_items(items)
+        print(count,'-th check at',current_time)
+        time.sleep(180) # Sleep for 300 seconds
 
-#     except:
-#         print("Current Time =", current_time)
-#         time.sleep(180) # Sleep for 300 seconds
-#         session.close()
-#         session = requests.Session()
+    except:
+        print("Current Time =", current_time)
+        time.sleep(180) # Sleep for 300 seconds
+        session.close()
+        session = requests.Session()
 
