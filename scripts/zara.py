@@ -3,50 +3,69 @@ import sys
 from bs4 import BeautifulSoup, Tag
 import time
 from GmailApi import *
-from zara_items import *
+from zara_items import products
 from datetime import datetime
 
 headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit 537.36 (KHTML, like Gecko) Chrome"}
+session = requests.Session()
+price_records_filename='zara.txt'
+
+def write_price_record(record,filename='zara.txt'):
+    should_write_header = os.path.exists(filename)
+    with open(filename, 'a') as f:
+        if should_write_header:
+            f.write('url,time,price\n')
+        f.write(','.join(record)+'\n')
+        f.close()
 
 
-# zara bs4
-def get_page(rootUrl):
-    req = session.get(rootUrl, headers=headers)
-    soup = BeautifulSoup(req.text, 'html.parser')
-    return soup.find("div", {"class": "product-size-selector__size-list-wrapper"})
+class shop_item:
+    def __init__(self, url, sizes):
+        self.url=url
+        self.price=999.9
+        self.price_records = []
+        self.sizes = sizes
 
-def check_items():
-    result=[]
-    for url, size in products.items():
-        size_selector=get_page(url)
-        # print(url)
-        this=[]
-        for s in size:
-            this_size=size_selector.find_all('li')[s]
-            this.append('product-size-selector__size-list-item--out-of-stock' in this_size['class'])
+    def send_email_alert(self):
+        message=create_message('me','jasonzhang0619ca@gmail.com','zara', self.url)
+        send_message(service,'me',message)
+
+    def refresh_page(self):
+        req = session.get(self.url, headers=headers)
+        self.sp = BeautifulSoup(req.text, 'html.parser')
+        # self.check_size_stock()
+        self.record_price()
+        
+    def record_price(self):
+        current_price = float(self.sp.find("span",{"class": "price__amount-current"}).text.strip(' CAD'))
+        if current_price < self.price:
+            write_price_record([self.url,datetime.now().strftime("%d/%m/%Y %H:%M:%S"),current_price])
+            self.price = current_price
+        
+    
+    def check_size_stock(self):
+        size_selector=self.sp.find("div", {"class": "product-size-selector__size-list-wrapper"})
+        for s in self.sizes:
+            if 'product-size-selector__size-list-item--out-of-stock' in size_selector.find_all('li')[s]['class']:
+                self.send_email_alert()
+
+
+def check_items(items):
+    for item in items:
+        item.refresh_page()
         time.sleep(2)
-        if all(this):# every size out ot stock
-            continue
-        result.append(url)
-    return result # [] if nothing in stock
 
 # reload(sys)
 # sys.setdefaultencoding('utf8')
 
-session = requests.Session()
-
 count=0
+items = [shop_item(url,sizes) for url, sizes in products.items()]
 while True:
     count+=1
     now = datetime.now()
-    current_time = now.strftime("%H:%M:%S")
+    current_time = now.strftime("%d/%m/%Y %H:%M:%S")
     try:
-        for stock in check_items():
-            del products[stock]
-            message=create_message('me','jasonzhang0619ca@gmail.com','zara',stock)
-            send_message(service,'me',message)
-            print(url,' in stock') 
-        
+        check_items(items)
         print(count,'-th check at',current_time)
         time.sleep(180) # Sleep for 300 seconds
 
