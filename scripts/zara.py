@@ -8,14 +8,14 @@ from datetime import datetime
 
 headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit 537.36 (KHTML, like Gecko) Chrome"}
 session = requests.Session()
-price_records_filename='zara.txt'
+price_records_filename='zara.csv'
 
-def write_price_record(record,filename='zara.txt'):
-    should_write_header = os.path.exists(filename)
+def write_price_record(record,filename='zara.csv'):
+    file_exist = os.path.exists(filename)
     with open(filename, 'a') as f:
-        if should_write_header:
+        if not file_exist:
             f.write('url,time,price\n')
-        f.write(','.join(record)+'\n')
+        f.write(' , '.join(record)+'\n')
         f.close()
 
 
@@ -39,14 +39,14 @@ class shop_item:
     def record_price(self):
         current_price = float(self.sp.find("span",{"class": "price__amount-current"}).text.strip(' CAD'))
         if current_price < self.price:
-            write_price_record([self.url,datetime.now().strftime("%d/%m/%Y %H:%M:%S"),current_price])
+            write_price_record([self.url,datetime.now().strftime("%d/%m/%Y %H:%M:%S"),str(current_price)])
             self.price = current_price
         
     
     def check_size_stock(self):
-        size_selector=self.sp.find("div", {"class": "product-size-selector__size-list-wrapper"})
+        size_selector=self.sp.find("div", {"class": "product-detail-size-selector__size-list-wrapper"})
         for s in self.sizes:
-            if 'product-size-selector__size-list-item--out-of-stock' in size_selector.find_all('li')[s]['class']:
+            if 'product-detail-size-selector__size-list-item--out-of-stock' not in size_selector.find_all('li')[s]['class']:
                 self.send_email_alert()
 
 
@@ -58,20 +58,20 @@ def check_items(items):
 # reload(sys)
 # sys.setdefaultencoding('utf8')
 
-count=0
-items = [shop_item(url,sizes) for url, sizes in products.items()]
-while True:
-    count+=1
-    now = datetime.now()
-    current_time = now.strftime("%d/%m/%Y %H:%M:%S")
-    try:
-        check_items(items)
-        print(count,'-th check at',current_time)
-        time.sleep(180) # Sleep for 300 seconds
+# count=0
+# items = [shop_item(url,sizes) for url, sizes in products.items()]
+# while True:
+#     count+=1
+#     now = datetime.now()
+#     current_time = now.strftime("%d/%m/%Y %H:%M:%S")
+#     try:
+#         check_items(items)
+#         print(count,'-th check at',current_time)
+#         time.sleep(180) # Sleep for 300 seconds
 
-    except:
-        print("Current Time =", current_time)
-        time.sleep(180) # Sleep for 300 seconds
-        session.close()
-        session = requests.Session()
+#     except:
+#         print("Current Time =", current_time)
+#         time.sleep(180) # Sleep for 300 seconds
+#         session.close()
+#         session = requests.Session()
 
