@@ -33,7 +33,7 @@ class shop_item:
     def refresh_page(self):
         req = session.get(self.url, headers=headers)
         self.sp = BeautifulSoup(req.text, 'html.parser')
-        # self.check_size_stock()
+        self.check_size_stock()
         self.record_price()
         
     def record_price(self):
@@ -45,9 +45,13 @@ class shop_item:
     
     def check_size_stock(self):
         size_selector=self.sp.find("div", {"class": "product-detail-size-selector__size-list-wrapper"})
+        sizes = []
         for s in self.sizes:
             if 'product-detail-size-selector__size-list-item--out-of-stock' not in size_selector.find_all('li')[s]['class']:
                 self.send_email_alert()
+            else:
+                sizes.append(s)
+        self.sizes=sizes   
 
 
 def check_items(items):
